@@ -1,32 +1,40 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect"
+      background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+      <el-menu-item index="logo" disabled style="cursor: pointer;">logologologologologo</el-menu-item>
+      <el-menu-item index="home">首页</el-menu-item>
+      <el-menu-item index="document">文档</el-menu-item>
+      <el-menu-item index="example">示例</el-menu-item>
+    </el-menu>
+    <router-view />
   </div>
 </template>
 
-<style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<script>
+  import {
+    mapState
+  } from 'vuex'
+  export default {
+    methods: {
+      handleSelect(key) {
+        this.$router.push(`/${key}`)
+        this.$store.commit('home/setActiveKey',key)
+      }
+    },
+    computed: {
+      ...mapState({
+        activeIndex: state => state.home.activeKey
+      })
+    },
   }
-}
+</script>
+
+<style lang="less">
+  html,
+  body,
+  #app {
+    margin: 0;
+    padding: 0;
+  }
 </style>
