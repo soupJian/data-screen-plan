@@ -4,7 +4,7 @@
     <div class="sub-title">基于echarts数据可视化图表库</div>
     <div class="button-link">
       <el-button type="danger" round @click="handleRouterChange('document')"><i
-          class="el-icon-document el-icon--left"></i>快速文档</el-button>
+          class="el-icon-document el-icon--left"></i>快速入门</el-button>
       <el-button round plain @click="handleRouterChange('example')"><i class="el-icon-message el-icon--left"></i>所有示例
       </el-button>
     </div>

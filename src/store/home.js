@@ -1,10 +1,11 @@
 const state = {
-  activeKey: 'home', // 激活的tab
+  activeKey: sessionStorage.getItem('activeKey') || '/home', // 激活的tab
 }
 
 const mutations = {
   setActiveKey(state, key) {
     state.activeKey = key
+    sessionStorage.setItem('activeKey',key)
   }
 }
 const getters = {}
