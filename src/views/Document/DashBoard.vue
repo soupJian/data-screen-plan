@@ -31,19 +31,5 @@
 <style lang="less" scoped>
   .dashboard {
     padding: 0 20px;
-    // /deep/ pre {
-    //   padding: 10px;
-    //   background: #282c3c;
-    //   word-break: break-all;
-    //   color: #fff;
-
-    //   code {
-    //     #text{
-
-    //       width: 100%;
-    //       overflow: auto;
-    //     }
-    //   }
-    // }
   }
 </style>

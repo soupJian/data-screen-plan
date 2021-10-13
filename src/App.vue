@@ -50,6 +50,28 @@
     overflow: auto;
   }
 
+  // ol{
+  //   padding-inline-start: 30px;
+  //   li{
+  //     &::marker{
+  //       color: #7f7c7c;
+  //     }
+  //   }
+  // }
+  .hljs ol {
+    margin: 0 0 0 35px;
+    padding: 0;
+    list-style-type: decimal;
+  }
+
+  .hljs ol li {
+    padding-left: 10px;
+    color: #abb2bf;
+    white-space: pre;
+    list-style-position: outside;
+    border-left: 1px solid #c5c5c5;
+  }
+
   header {
     position: fixed !important;
     top: 0;
@@ -58,7 +80,6 @@
   }
 
   .el-menu {
-
     max-height: 61px;
     overflow: hidden;
   }

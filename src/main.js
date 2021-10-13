@@ -15,6 +15,11 @@ Vue.directive('highlight', (el) => {
   let blocks = el.querySelectorAll('pre code')
   blocks.forEach((block) => {
     highlight.highlightBlock(block)
+    // 从这开始是设置行号
+    block.innerHTML = `<ol><li>${block.innerHTML.replace(
+      /\n/g,
+      `</li><li class="line">`
+    )}</li></ol>`;
   })
 })
 
