@@ -24,8 +24,8 @@ const routes = [
         redirect: '/document/dashboard'
       },
       {
-        path: '/document/dashboard',
-        component: ()=> import('../views/Document/DashBoard.vue')
+        path: '/document/:textId',
+        component: ()=> import('../views/Document/DocumentItem.vue')
       }
     ]
   }

@@ -5,6 +5,7 @@
 </template>
 <script>
   // 引入样式
+  import {Loading} from 'element-ui'
   import "highlight.js/styles/darcula.css";
   import marked from 'marked';
   import {
@@ -13,18 +14,38 @@
   export default {
     data() {
       return {
-        htmlMD: ''
+        htmlMD: '',
+        loadingOption:{
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        }
       }
     },
     methods: {
       fetchMdDocument() {
-        readMd().then(res => {
+        const loading = Loading.service(this.loadingOption)
+        readMd(this.textId).then(res => {
           this.htmlMD = marked(res)
+          setTimeout(()=>{
+            loading.close()
+          },500)
         })
+      }
+    },
+    computed: {
+      textId() {
+        return this.$route.params.textId
       }
     },
     mounted() {
       this.fetchMdDocument()
+    },
+    watch: {
+      textId() {
+        this.fetchMdDocument()
+      }
     }
   }
 </script>

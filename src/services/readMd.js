@@ -1,6 +1,6 @@
 import {request} from '../utils/request.js'
-export const readMd = async() =>{
+export const readMd = async(textId) =>{
   return await request({
-    url: '/data-screen.md'
+    url: `${textId}.md`
   })
 }

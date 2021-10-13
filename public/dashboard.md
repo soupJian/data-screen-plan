@@ -42,6 +42,7 @@
 ```
 
 ```scss
+// css部分
 html,body,#app{
     width: 100%;
     height: 100%;
@@ -104,6 +105,7 @@ export default {
 **utils/getScale.js**
 
 ```javascript
+// js部分
 const height = 1080 // 设计稿 height
 const width = 1920 // 设计稿 width
 // 获取宽高比例
