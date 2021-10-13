@@ -17,7 +17,17 @@ const routes = [
   {
     path: '/document',
     name: 'Document',
-    component: () => import('../views/Document/Index.vue')
+    component: () => import('../views/Document/Index.vue'),
+    children:[
+      {
+        path: '/document',
+        redirect: '/document/dashboard'
+      },
+      {
+        path: '/document/dashboard',
+        component: ()=> import('../views/Document/DashBoard.vue')
+      }
+    ]
   }
 ]
 

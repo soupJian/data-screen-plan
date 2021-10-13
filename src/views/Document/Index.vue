@@ -49,18 +49,21 @@
   max-height: none;
 }
 .document{
-  display: flex;
-  height: calc(100% - 61px);
+  width: 100%;
+  max-width: 100%;
   .document-left{
     width: 200px;
-    height: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    top: 61px;
     .el-menu{
       height: 100%;
       max-height: none;
     }
   }
   .document-right{
-    flex: 1;
+    margin-left: 200px;
   }
 }
 </style>

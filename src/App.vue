@@ -1,12 +1,14 @@
 <template>
   <div id="app">
-    <el-menu :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect"
-      background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-      <el-menu-item index="logo" disabled style="cursor: pointer;">logologologologologo</el-menu-item>
-      <el-menu-item index="/home">首页</el-menu-item>
-      <el-menu-item index="/document">文档</el-menu-item>
-      <el-menu-item index="/example">示例</el-menu-item>
-    </el-menu>
+    <header>
+      <el-menu :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect"
+        background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+        <el-menu-item index="logo" disabled style="cursor: pointer;">logologologologologo</el-menu-item>
+        <el-menu-item index="/home">首页</el-menu-item>
+        <el-menu-item index="/document">文档</el-menu-item>
+        <el-menu-item index="/example">示例</el-menu-item>
+      </el-menu>
+    </header>
     <router-view />
   </div>
 </template>
@@ -26,7 +28,7 @@
       ...mapState({
         activeIndex: state => state.home.activeKey
       }),
-      activeRouter(){
+      activeRouter() {
         return this.$route.path
       }
     }
@@ -45,13 +47,23 @@
     height: 100%;
     margin: 0;
     padding: 0;
+    overflow: auto;
+  }
+
+  header {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
   }
 
   .el-menu {
+
     max-height: 61px;
     overflow: hidden;
   }
-  .el-menu.el-menu--horizontal{
+
+  .el-menu.el-menu--horizontal {
     border-bottom: 2px solid rgb(84, 92, 100) !important;
   }
 </style>
