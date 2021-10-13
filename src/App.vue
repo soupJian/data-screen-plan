@@ -50,14 +50,6 @@
     overflow: auto;
   }
 
-  // ol{
-  //   padding-inline-start: 30px;
-  //   li{
-  //     &::marker{
-  //       color: #7f7c7c;
-  //     }
-  //   }
-  // }
   .hljs ol {
     margin: 0 0 0 35px;
     padding: 0;
