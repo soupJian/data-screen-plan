@@ -11,19 +11,17 @@
           <el-menu-item-group>
             <el-menu-item index="dashboard" route="/document/dashboard">适配方案</el-menu-item>
           </el-menu-item-group>
-        </el-submenu>
-        <el-submenu index="2">
-          <template slot="title">
-            <i class="el-icon-location"></i>
-            <span>markdown</span>
-          </template>
           <el-menu-item-group>
-            <el-menu-item index="2-1" route="/document/markdown-highlight">code highlight line</el-menu-item>
+            <el-menu-item index="echarts" route="/document/echarts">echarts使用</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
-        <el-menu-item index="3">
-          <i class="el-icon-document"></i>
-          <span slot="title">导航三</span>
+        <el-menu-item index="markdown-highlight" route="/document/markdown-highlight">
+            <i class="el-icon-location"></i>
+            <span>markdown</span>
+        </el-menu-item>
+        <el-menu-item index="chart-api" route="/document/chart-api">
+          <i class="el-icon-location"></i>
+          <span slot="title">api</span>
         </el-menu-item>
         <el-menu-item index="4">
           <i class="el-icon-setting"></i>
@@ -67,6 +65,7 @@
   .document {
     width: 100%;
     max-width: 100%;
+    margin-top: 61px;
 
     .document-left {
       width: 200px;
@@ -74,6 +73,7 @@
       left: 0;
       bottom: 0;
       top: 61px;
+      z-index: 10;
 
       .el-menu {
         height: 100%;
@@ -83,6 +83,7 @@
 
     .document-right {
       margin-left: 200px;
+      min-height: calc(100vh - 61px);
     }
   }
 </style>

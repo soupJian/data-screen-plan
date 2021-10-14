@@ -86,7 +86,7 @@
 <style lang="less" scoped>
   .home {
     margin: 0 auto;
-    margin-top: 20vh;
+    margin-top: 30vh;
     padding: 0 100px;
     position: relative;
 

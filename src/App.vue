@@ -48,6 +48,7 @@
     margin: 0;
     padding: 0;
     overflow: auto;
+    z-index: 10;
   }
 
   .hljs ol {
