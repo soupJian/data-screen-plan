@@ -28,6 +28,21 @@ const routes = [
         component: ()=> import('../views/Document/DocumentItem.vue')
       }
     ]
+  },
+  {
+    path: '/example',
+    name: 'Example',
+    component: () => import('../views/Example/Index.vue'),
+    // children:[
+    //   {
+    //     path: '/example',
+    //     redirect: '/example/defaultpie'
+    //   },
+    //   {
+    //     path: '/example/:chartId',
+    //     component: ()=> import('../views/Document/DocumentItem.vue')
+    //   }
+    // ]
   }
 ]
 

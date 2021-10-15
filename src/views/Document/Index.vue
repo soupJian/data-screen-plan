@@ -23,9 +23,9 @@
           <i class="el-icon-location"></i>
           <span slot="title">api</span>
         </el-menu-item>
-        <el-menu-item index="4">
+        <el-menu-item index="chart-option" route="/document/chart-option">
           <i class="el-icon-setting"></i>
-          <span slot="title">导航四</span>
+          <span slot="title">option</span>
         </el-menu-item>
       </el-menu>
     </div>
