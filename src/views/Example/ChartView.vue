@@ -87,202 +87,329 @@
         }
         return option
       },
-      pieTwoOption() {
+      barOneOption() {
         const option = {
-          backgroundColor: "#0B1837",
-          color: ["#EAEA26", "#906BF9", "#FE5656", "#01E17E", "#3DD1F9", "#FFAD05"],
-          // title: {
-          //     text: '网络/安全设备',
-          //     left: '60',
-          //     top: 0,
-          //     textAlign: 'center',
-          //     textStyle: {
-          //         color: '#fff',
-          //         fontSize: 14,
-          //         fontWeight: 0
-          //     }
-          // },
           grid: {
-            left: -100,
-            top: 50,
-            bottom: 10,
+            bottom: 150,
+            left: 50,
             right: 10,
-            containLabel: true
-          },
-          tooltip: {
-            trigger: 'item',
-            formatter: "{b} : {c} ({d}%)"
+            top: 100,
           },
           legend: {
-            type: "scroll",
-            orient: "vartical",
-            // x: "right",
-            top: "center",
-            right: "15",
-            // bottom: "0%",
-            itemWidth: 16,
-            itemHeight: 8,
-            itemGap: 16,
-            textStyle: {
-              color: '#A3E2F4',
-              fontSize: 12,
-              fontWeight: 0
-            },
-            data: ['IDS', 'VPN', '交换机', '防火墙', 'WAF', '堡垒机']
+            show: true,
+            bottom: 50,
+            left: 'center',
+            data: ['one', 'two']
           },
-          polar: {},
-          angleAxis: {
-            interval: 1,
+          xAxis: {
             type: 'category',
-            data: [],
-            z: 10,
-            axisLine: {
-              show: false,
-              lineStyle: {
-                color: "#0B4A6B",
-                width: 1,
-                type: "solid"
-              },
+            splitLine: {
+              show: false
             },
+            data: ['星期一', '周二', '周三', '周四', '周五', '周六', '周日'],
             axisLabel: {
-              interval: 0,
-              show: true,
-              color: "#0B4A6B",
-              margin: 8,
-              fontSize: 16
+              formatter: function (params) {
+                var newParamsName = "";
+                var paramsNameNumber = params.length;
+                var provideNumber = 2;
+                var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+                if (paramsNameNumber > provideNumber) {
+                  for (var p = 0; p < rowNumber; p++) {
+                    var tempStr = "";
+                    var start = p * provideNumber;
+                    var end = start + provideNumber;
+                    if (p == rowNumber - 1) {
+                      tempStr = params.substring(start, paramsNameNumber);
+                    } else {
+                      tempStr = params.substring(start, end) + "\n";
+                    }
+                    newParamsName += tempStr;
+                  }
+                } else {
+                  newParamsName = params;
+                }
+                return newParamsName
+              }
             },
           },
-          radiusAxis: {
-            min: 40,
-            max: 120,
-            interval: 20,
+          yAxis: {
+            type: 'value',
+            name: '金额/元',
             axisLine: {
-              show: false,
-              lineStyle: {
-                color: "#0B3E5E",
-                width: 1,
-                type: "solid"
-              },
+              show: true
             },
-            axisLabel: {
-              formatter: '{value} %',
-              show: false,
-              padding: [0, 0, 20, 0],
-              color: "#0B3E5E",
-              fontSize: 16
+            axisTick: {
+              show: true,
             },
             splitLine: {
-              lineStyle: {
-                color: "#0B3E5E",
-                width: 2,
-                type: "solid"
-              }
+              show: false
             }
           },
-          calculable: true,
           series: [{
-            type: 'pie',
-            radius: ["5%", "10%"],
-            hoverAnimation: false,
-            labelLine: {
-              normal: {
-                show: false,
-                length: 30,
-                length2: 55
-              },
-              emphasis: {
-                show: false
-              }
-            },
-            data: [{
-              name: '',
-              value: 0,
-              itemStyle: {
-                normal: {
-                  color: "#0B4A6B"
-                }
-              }
-            }]
-          }, {
-            type: 'pie',
-            radius: ["90%", "95%"],
-            hoverAnimation: false,
-            labelLine: {
-              normal: {
-                show: false,
-                length: 30,
-                length2: 55
-              },
-              emphasis: {
-                show: false
-              }
-            },
-            name: "",
-            data: [{
-              name: '',
-              value: 0,
-              itemStyle: {
-                normal: {
-                  color: "#0B4A6B"
-                }
-              }
-            }]
-          }, {
-            stack: 'a',
-            type: 'pie',
-            radius: ['20%', '80%'],
-            roseType: 'area',
-            zlevel: 10,
-            label: {
-              normal: {
-                show: true,
-                formatter: "{c}",
-                textStyle: {
-                  fontSize: 12,
+              type: 'bar',
+              name: 'one',
+              data: [120, 200, 150, 80, 70, 110, {
+                value: 120,
+                itemStyle: {
+                  color: 'blue',
+                  borderRadius: 5
                 },
-                position: 'outside'
-              },
-              emphasis: {
-                show: true
-              }
-            },
-            labelLine: {
-              normal: {
+              }],
+              label: {
                 show: true,
-                length: 20,
-                length2: 55
+                position: 'inside',
+                color: 'red',
+                formatter: '{b}: {@score}'
               },
-              emphasis: {
-                show: false
+              showBackground: true,
+              backgroundStyle: {
+                color: 'pink'
+              },
+            },
+            {
+              type: 'bar',
+              name: 'two',
+              data: [120, 200, 150, 80, 70, 110, 120],
+              itemStyle: {
+                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                  offset: 0,
+                  color: '#3782AD'
+                }, {
+                  offset: 1,
+                  color: '#18D5E9'
+                }])
+              },
+              label: {
+                show: true,
+                position: 'top',
+                formatter: '{b}: {@score}'
+              },
+            }
+          ]
+        };
+        return option
+      },
+      barTwoOption() {
+        const option = {
+          tooltip: {
+            trigger: 'axis'
+          },
+          xAxis: {
+            type: 'category',
+            data: ['星期一', '周二', '周三', '周四', '周五', '周六', '周日'],
+            axisLabel: {
+              formatter: function (params) {
+                var newParamsName = "";
+                var paramsNameNumber = params.length;
+                var provideNumber = 2;
+                var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+                if (paramsNameNumber > provideNumber) {
+                  for (var p = 0; p < rowNumber; p++) {
+                    var tempStr = "";
+                    var start = p * provideNumber;
+                    var end = start + provideNumber;
+                    if (p == rowNumber - 1) {
+                      tempStr = params.substring(start, paramsNameNumber);
+                    } else {
+                      tempStr = params.substring(start, end) + "\n";
+                    }
+                    newParamsName += tempStr;
+                  }
+                } else {
+                  newParamsName = params;
+                }
+                return newParamsName
               }
             },
-            data: [{
-                value: 10,
-                name: 'IDS'
+            splitLine: {
+              show: false
+            },
+          },
+          yAxis: [{
+            type: 'value',
+            name: '金额/万元',
+            splitLine: {
+              show: false
+            },
+            axisLine: {
+              show: true
+            },
+            axisTick: {
+              show: true,
+            }
+          }, {
+            type: 'value',
+            name: '数量/家',
+            splitLine: {
+              show: false
+            },
+            axisLine: {
+              show: true
+            },
+            nameTextStyle: {
+              color: 'green'
+            }
+          }],
+          series: [{
+              type: 'bar',
+              yAxisIndex: 0,
+              data: [120, 200, 150, 80, 70, 110, {
+                value: 120,
+                itemStyle: {
+                  color: 'blue',
+                  borderRadius: 5
+                },
+              }],
+            },
+            {
+              type: 'bar',
+              yAxisIndex: 1,
+              data: [20, 150, 90, 180, 50, 60, 120]
+            }
+          ]
+        };
+        return option
+      },
+      barThreeOption() {
+        const option = {
+          grid: {
+            bottom: 150,
+            left: 50,
+            right: 10,
+            top: 100,
+          },
+          xAxis: {
+            type: 'category',
+            splitLine: {
+              show: false
+            },
+            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+          },
+          yAxis: {
+            type: 'value',
+            name: '金额/元',
+            axisLine: {
+              show: true
+            },
+            axisTick: {
+              show: true,
+            },
+            splitLine: {
+              show: false
+            }
+          },
+          series: [{
+              type: 'bar',
+              stack: 'Total',
+              data: [0, 1700, 1400, 1200, 300, 100, 0],
+              label: {
+                show: true,
+                position: 'inside',
+                formatter: function (params) {
+                  if (params.value === 0) {
+                    return ''
+                  } else {
+                    return params.value
+                  }
+                }
               },
-              {
-                value: 5,
-                name: 'VPN'
-              },
-              {
-                value: 15,
-                name: '交换机'
-              },
-              {
-                value: 25,
-                name: '防火墙'
-              },
-              {
-                value: 20,
-                name: 'WAF'
-              },
-              {
-                value: 35,
-                name: '堡垒机'
+              itemStyle: {
+                color: 'skyblue'
               }
-            ]
-          }, ]
-        }
+            },
+            {
+              type: 'bar',
+              stack: 'Total',
+              data: [2900, 1200, 300, 200, 900, 200, 100],
+              label: {
+                show: true,
+                position: 'inside'
+              },
+              itemStyle: {
+                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                  offset: 0,
+                  color: '#3782AD'
+                }, {
+                  offset: 1,
+                  color: '#18D5E9'
+                }])
+              },
+            }
+          ]
+        };
+        return option
+      },
+      barFourOption() {
+        const option = {
+          grid: {
+            bottom: 150,
+            left: 50,
+            right: 10,
+            top: 100,
+          },
+          xAxis: {
+            type: 'value',
+            position: 'top',
+            splitLine: {
+              show: false
+            },
+          },
+          yAxis: {
+            type: 'category',
+            axisLine: {
+              show: false
+            },
+            axisLabel:{
+              show: false
+            },
+            axisTick: {
+              show: false,
+            },
+            splitLine: {
+              show: false
+            },
+            data:['周一','周二','周三','周四','周五','周六','周日']
+          },
+          series: [{
+            type: 'bar',
+            data: [{
+                value: -200,
+                label: {position: 'right'}
+              },
+              {
+                value: 500,
+                label: {position: 'left'}
+              },
+              {
+                value: 700,
+                label: {position: 'left'}
+              },
+              {
+                value: -200,
+                label: {position: 'right'}
+              },
+              {
+                value: 300,
+                label: {position: 'left'}
+              },
+              {
+                value: -100,
+                label: {position: 'right'}
+              },
+              {
+                value: -90,
+                label: {position: 'right'}
+              }
+            ],
+            label: {
+              show: true,
+              formatter: '{b}',
+            },
+            itemStyle: {
+              color: 'skyblue'
+            }
+          }]
+        };
         return option
       },
       option() {
@@ -291,8 +418,17 @@
           case 'pie-1':
             defaultOption = this.pieOneOption
             break;
-          case 'pie-2':
-            defaultOption = this.pieTwoOption
+          case 'bar-1':
+            defaultOption = this.barOneOption
+            break;
+          case 'bar-2':
+            defaultOption = this.barTwoOption
+            break;
+          case 'bar-3':
+            defaultOption = this.barThreeOption
+            break;
+          case 'bar-4':
+            defaultOption = this.barFourOption
             break;
         }
         this.$emit('setOption', defaultOption, 1)

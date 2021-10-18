@@ -111,3 +111,30 @@ dispatchAction({
 })
 ```
 
+### 补充
+
+渐变
+
+`echarts.graphic.LinearGradient(a,b,c,d,arr)`
+
+```
+a:  arr中的颜色右到左
+b:  arr中的颜色下到上
+c:  arr中的颜色左到右
+d:  arr中的颜色上到下
+```
+
+```javascript
+itemStyle:{
+  normal:{
+    color: new echarts.graphic.LinearGradient(0,1,0,0,[{
+     offset: 0,
+     color: '#3782AD'
+    },{
+     offset: 1,
+     color: '#18D5E9'
+    }])
+  }
+},
+```
+

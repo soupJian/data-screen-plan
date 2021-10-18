@@ -1,7 +1,8 @@
 <template>
   <div class="home">
     <div class="title">数据可视化方案平台</div>
-    <div class="sub-title">基于echarts数据可视化图表库</div>
+    <div class="sub-title">基于echarts数据可视化图表库 
+      <el-link type="primary" href="https://echarts.apache.org/zh/index.html" target="_blank">echarts官网</el-link></div>
     <div class="button-link">
       <el-button type="danger" round @click="handleRouterChange('document')"><i
           class="el-icon-document el-icon--left"></i>快速入门</el-button>

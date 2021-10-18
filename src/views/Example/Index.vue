@@ -11,8 +11,23 @@
           <el-menu-item-group>
             <el-menu-item index="pie-1">基础饼图</el-menu-item>
           </el-menu-item-group>
+        </el-submenu>
+        <el-submenu index="pie">
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span>柱状图</span>
+          </template>
           <el-menu-item-group>
-            <el-menu-item index="pie-2">优秀案例一</el-menu-item>
+            <el-menu-item index="bar-1">基础柱状图</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group>
+            <el-menu-item index="bar-2">双y轴柱状图</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group>
+            <el-menu-item index="bar-3">堆叠柱状图</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group>
+            <el-menu-item index="bar-4">正负轴柱状图</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>
