@@ -12,7 +12,7 @@
             <el-menu-item index="pie-1">基础饼图</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
-        <el-submenu index="pie">
+        <el-submenu index="bar">
           <template slot="title">
             <i class="el-icon-location"></i>
             <span>柱状图</span>
@@ -30,6 +30,15 @@
             <el-menu-item index="bar-4">正负轴柱状图</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
+        <el-submenu index="line">
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span>折线图</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="line-1">基础折线图</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
       </el-menu>
     </div>
     <div class="example-right">
@@ -40,8 +49,7 @@
         </div>
       </div>
       <div class="chart-wrap">
-        <chart-view @setOption="setOption" :infoSetting="infoSetting" :updata="updata" :defaultActive="defaultActive"
-          v-if="defaultKey == 'pie'" />
+        <chart-view @setOption="setOption" :infoSetting="infoSetting" :update="update" :defaultActive="defaultActive"/>
       </div>
     </div>
   </div>
@@ -61,7 +69,7 @@
         monacoEditor: null,
         infoSetting: '',
         infoSettingDefault: '',
-        updata: false,
+        update: false,
       }
     },
     methods: {
@@ -105,16 +113,16 @@
       },
       updateChart() {
         this.infoSetting = this.monacoEditor.getValue()
-        this.updata = true
+        this.update = true
         setTimeout(() => {
-          this.updata = false
+          this.update = false
         }, 500);
       },
       resetChart() {
         this.infoSetting = this.infoSettingDefault
-        this.updata = true
+        this.update = true
         setTimeout(() => {
-          this.updata = false
+          this.update = false
         }, 500);
       }
     },

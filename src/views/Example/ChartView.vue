@@ -4,7 +4,7 @@
 <script>
   import * as echarts from 'echarts'
   export default {
-    props: ['infoSetting', 'updata', 'defaultActive'],
+    props: ['infoSetting', 'update', 'defaultActive'],
     mounted() {
       this.myChart = echarts.init(this.$refs.chartPie)
       this.myChart.setOption(this.option)
@@ -359,7 +359,7 @@
             axisLine: {
               show: false
             },
-            axisLabel:{
+            axisLabel: {
               show: false
             },
             axisTick: {
@@ -368,37 +368,51 @@
             splitLine: {
               show: false
             },
-            data:['周一','周二','周三','周四','周五','周六','周日']
+            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
           },
           series: [{
             type: 'bar',
             data: [{
                 value: -200,
-                label: {position: 'right'}
+                label: {
+                  position: 'right'
+                }
               },
               {
                 value: 500,
-                label: {position: 'left'}
+                label: {
+                  position: 'left'
+                }
               },
               {
                 value: 700,
-                label: {position: 'left'}
+                label: {
+                  position: 'left'
+                }
               },
               {
                 value: -200,
-                label: {position: 'right'}
+                label: {
+                  position: 'right'
+                }
               },
               {
                 value: 300,
-                label: {position: 'left'}
+                label: {
+                  position: 'left'
+                }
               },
               {
                 value: -100,
-                label: {position: 'right'}
+                label: {
+                  position: 'right'
+                }
               },
               {
                 value: -90,
-                label: {position: 'right'}
+                label: {
+                  position: 'right'
+                }
               }
             ],
             label: {
@@ -408,6 +422,162 @@
             itemStyle: {
               color: 'skyblue'
             }
+          }]
+        };
+        return option
+      },
+      lineOneOption() {
+        let xLabel = ['1', '2', '3', '4', '5', '6']
+        let goToSchool = ["40", "80", "32", "85", "50", "40"]
+        let goOutSchool = ["20", "50", "12", "65", "30", "60"]
+        const option = {
+          backgroundColor: '#0e1c47',
+          legend: {
+            align: "left",
+            right: '5%',
+            top: '10%',
+            textStyle: {
+              color: '#7ec7ff',
+              fontSize: 16
+            },
+            itemGap: 25,
+            itemWidth: 18,
+            icon: 'path://M0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z',
+            data: ['数据一', '数据二']
+          },
+          grid: {
+            top: '18%',
+            left: '15%',
+            right: '5%',
+            bottom: '25%',
+            // containLabel: true
+          },
+          xAxis: [{
+            type: 'category',
+            boundaryGap: false,
+            axisLine: { //坐标轴轴线相关设置。数学上的x轴
+              show: true,
+              lineStyle: {
+                color: '#233653'
+              },
+            },
+            axisLabel: { //坐标轴刻度标签的相关设置
+              color: '#7ec7ff'
+            },
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: '#192a44'
+              },
+            },
+            axisTick: {
+              show: false,
+            },
+            data: xLabel
+          }],
+          yAxis: [{
+            name: '人数',
+            nameTextStyle: {
+              color: "#7ec7ff",
+              fontSize: 16,
+              padding: 10
+            },
+            min: 0,
+            splitLine: {
+              show: true,
+              lineStyle: {
+                color: '#192a44'
+              },
+            },
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: "#233653"
+              }
+
+            },
+            axisLabel: {
+              show: true,
+              color: '#7ec7ff',
+              formatter: function (value) {
+                if (value === 0) {
+                  return value
+                }
+                return value
+              }
+            },
+            axisTick: {
+              show: false,
+            },
+          }],
+          series: [{
+            name: '数据一',
+            type: 'line',
+            // smooth: true,
+            symbol: 'circle',
+            symbolSize: 4,
+            lineStyle: {
+              width: 2,
+              color: "rgba(25,163,223,1)", // 线条颜色
+              borderColor: 'rgba(0,0,0,.4)',
+            },
+            itemStyle: {
+              color: "rgba(25,163,223,1)",
+              borderColor: "#646ace",
+              borderWidth: 2
+            },
+            areaStyle: { //区域填充样式
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: "rgba(25,163,223,.3)"
+                },
+                {
+                  offset: 1,
+                  color: "rgba(25,163,223, 0)"
+                }
+              ], false),
+              shadowColor: 'rgba(25,163,223, 0.5)', //阴影颜色
+              shadowBlur: 20
+            },
+            data: goToSchool
+          }, {
+            name: '数据二',
+            type: 'line',
+            smooth: true,
+            showSymbol: false,
+            markPoint: {
+                data: [{ type: 'max', name: '最大值' },{ type: 'min', name: '最小值' }],
+                animationDelay: 1000,
+                animationDuration: 1000,
+            },
+            lineStyle: {
+              width: 2,
+              color: "rgba(10,219,250,1)", // 线条颜色
+              borderColor: 'rgba(0,0,0,.4)',
+            },
+            itemStyle: {
+              color: "rgba(10,219,250,1)",
+              borderColor: "#646ace",
+              borderWidth: 2
+            },
+            tooltip: {
+              show: true
+            },
+            areaStyle: { //区域填充样式
+              //线性渐变，前4个参数分别是x0,y0,x2,y2(范围0~1);相当于图形包围盒中的百分比。如果最后一个参数是‘true’，则该四个值是绝对像素位置。
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: "rgba(10,219,250,.3)"
+                },
+                {
+                  offset: 1,
+                  color: "rgba(10,219,250, 0)"
+                }
+              ], false),
+              shadowColor: 'rgba(10,219,250, 0.5)', //阴影颜色
+              shadowBlur: 20 //shadowBlur设图形阴影的模糊大小。配合shadowColor,shadowOffsetX/Y, 设置图形的阴影效果。
+            },
+            data: goOutSchool
           }]
         };
         return option
@@ -430,14 +600,17 @@
           case 'bar-4':
             defaultOption = this.barFourOption
             break;
+          case 'line-1':
+            defaultOption = this.lineOneOption
+            break;
         }
         this.$emit('setOption', defaultOption, 1)
         return defaultOption
       }
     },
     watch: {
-      updata() {
-        if (this.updata) {
+      update() {
+        if (this.update) {
           try {
             this.myChart.setOption(JSON.parse(this.infoSetting))
             this.$emit('setOption', JSON.parse(this.infoSetting), 2)
