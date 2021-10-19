@@ -12,7 +12,7 @@ textStyle: 主标题样式 {}
 subtext: 副标题文字
 subTextStyle: 副标题样式 {}
 itemGap： 祝福标题间距 number
-...主标题和副标题 文字样式
+...主标题和副标题 文字样式 以及文字位置
 ```
 
 ## legend
@@ -25,6 +25,88 @@ align: // 标签文本对齐方式 auto left right
 itemStyle:
 lineStyle:
 ```
+
+## tooltip
+
+**鼠标进入图层，展示某个区域数据介绍**
+
+注意点：如果要在series中设置 tooltip，必须先在series的同级设置tooltip的show为true
+
+```javascript
+const option = {
+    ...
+    tooltip:{
+        show: true
+    },
+    series:[{
+        ...
+        tooltip:{
+            ...
+		}
+    }]
+}
+```
+
+**tooltip也可以是dom元素**
+
+```javascript
+tooltip:{
+    formatter:function(parama){
+        const tipHtml ='<div style="width:80px;height:80px;background:rgba(22,80,158,0.8);border:1px solid rgba(7,166,255,0.7)">' +
+                  '<div style="width:100%;height:40px;line-height:40px;border-bottom:2px solid rgba(7,166,255,0.7);padding:0 5px">' +
+                  '<i style="display:inline-block;width:8px;height:8px;background:#16d6ff;border-radius:5px;">' +
+                  '</i>' +
+                  '<span style="margin-left:10px;color:#fff;font-size:16px;">' + params.name + '</span>' +
+                  '</div>' +
+                  '<div style="padding:5px">' +
+                  '<p style="color:#fff;font-size:12px;">' +
+                  '总数：' + '<span style="color:#11ee7d;">' + params.value + '</span>' + '个' + '</p>' +
+                  '</div>' + '</div>';
+                return tipHtml;
+    }
+}
+```
+
+**tooltip轮播**
+
+```javascript
+this.myChart = echarts.init(this.$refs.chartDom)
+let index = 0; //播放所在下标
+this.showTipTimer = setInterval(() => {
+  this.myChart.dispatchAction({
+    type: 'showTip',
+    seriesIndex: 0,
+    dataIndex: index
+  });
+  index++;
+  if (index >= this.option.series[0].data.length) {
+    index = 0;
+  }
+}, 2000)
+this.myChart.on('mouseover', (params) => {
+  clearInterval(this.showTipTimer);
+  this.myChart.dispatchAction({
+    type: 'showTip',
+    seriesIndex: 0,
+    dataIndex: params.dataIndex,
+  });
+});
+this.myChart.on('mouseout', () => {
+  clearInterval(this.showTipTimer);
+  this.showTipTimer = setInterval(()=> {
+    this.myChart.dispatchAction({
+      type: 'showTip',
+      seriesIndex: 0,
+      dataIndex: index
+    });
+    index++;
+    if (index >= this.option.series[0].data.length) {
+      index = 0;
+    }
+  }, 2000);
+```
+
+
 
 ## grid
 

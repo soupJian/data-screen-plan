@@ -15,6 +15,11 @@
   } from '@/utils/chinaData.js'
   export default {
     props: ['infoSetting', 'update', 'defaultKey', 'defaultActive'],
+    data() {
+      return {
+        showTipTimer: null
+      }
+    },
     mounted() {
       this.myChart = echarts.init(this.$refs.chartDom)
       this.myChart.setOption(this.option)
@@ -520,6 +525,9 @@
               show: false,
             },
           }],
+          tooltip: {
+            show: true
+          },
           series: [{
             name: '数据一',
             type: 'line',
@@ -535,6 +543,30 @@
               color: "rgba(25,163,223,1)",
               borderColor: "#646ace",
               borderWidth: 2
+            },
+            tooltip: {
+              show: true,
+              padding: 0,
+              enterable: true,
+              transitionDuration: 1,
+              textStyle: {
+                color: '#000',
+                decoration: 'none',
+              },
+              formatter: function (params) {
+                const tipHtml =
+                  '<div style="width:80px;height:80px;background:rgba(22,80,158,0.8);border:1px solid rgba(7,166,255,0.7)">' +
+                  '<div style="width:100%;height:40px;line-height:40px;border-bottom:2px solid rgba(7,166,255,0.7);padding:0 5px">' +
+                  '<i style="display:inline-block;width:8px;height:8px;background:#16d6ff;border-radius:5px;">' +
+                  '</i>' +
+                  '<span style="margin-left:10px;color:#fff;font-size:16px;">' + params.name + '</span>' +
+                  '</div>' +
+                  '<div style="padding:5px">' +
+                  '<p style="color:#fff;font-size:12px;">' +
+                  '总数：' + '<span style="color:#11ee7d;">' + params.value + '</span>' + '个' + '</p>' +
+                  '</div>' + '</div>';
+                return tipHtml;
+              }
             },
             areaStyle: { //区域填充样式
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -646,40 +678,18 @@
             left: 'center',
             subtext: '点图和涟漪图'
           },
-          tooltip: {
-            padding: 0,
-            enterable: true,
-            transitionDuration: 1,
-            textStyle: {
-              color: '#000',
-              decoration: 'none',
-            },
-            formatter: function (params) {
-              var tipHtml = '';
-              tipHtml =
-                '<div style="width:80px;height:80px;background:rgba(22,80,158,0.8);border:1px solid rgba(7,166,255,0.7)">' +
-                '<div style="width:100%;height:40px;line-height:40px;border-bottom:2px solid rgba(7,166,255,0.7);padding:0 5px">' +
-                '<i style="display:inline-block;width:8px;height:8px;background:#16d6ff;border-radius:5px;">' +
-                '</i>' +
-                '<span style="margin-left:10px;color:#fff;font-size:16px;">' + params.name + '</span>' + '</div>' +
-                '<div style="padding:5px">' +
-                '<p style="color:#fff;font-size:12px;">' +
-                '总数：' + '<span style="color:#11ee7d;">' + params.value + '</span>' + '个' + '</p>' +
-                '</div>' + '</div>';
-              return tipHtml;
-            }
-          },
           visualMap: {
             show: true,
-            min: 0,
-            max: 100,
+            type: 'piecewise',
             left: 'left',
             top: 'bottom',
-            text: ['高', '低'],
-            calculable: true,
+            splitNum: 5,
+            pieces: [{ max: 50 },{ min: 51, max: 70 },{ min: 71, max: 80 },{ min: 81,max:90 },{ min: 91,max:100 }],
             inRange: {
-              color: ['#ffffff', '#E0DAFF', '#ADBFFF', '#9CB4FF', '#6A9DFF', '#3889FF']
+              symbol: 'rect',
+              color: ['#E0DAFF', '#ADBFFF', '#9CB4FF', '#6A9DFF', '#3889FF']
             },
+            hoverLink: false,
             seriesIndex: 0
           },
           geo: {
@@ -697,6 +707,7 @@
               itemStyle: {
                 borderWidth: .5
               },
+              silent: true,
               data: visualMapChinaData
             },
             {
@@ -960,23 +971,62 @@
         }
       },
       defaultActive() {
-        if (this.defaultKey === 'map') {
-          echarts.registerMap('china', chinaJson)
-          if (this.defaultActive === 'map-4') {
-            echarts.registerMap('china-contour', chinaContourJson)
-          }
-          if (this.defaultActive === 'map-5') {
-            echarts.registerMap('china-cities', chinaCitiesJson)
-          }
-          if (this.defaultActive === 'map-6') {
-            echarts.registerMap('world', worldJson)
-          }
-        }
+        clearInterval(this.showTipTimer);
         this.myChart = echarts.dispose(this.$refs.chartDom)
         try {
+          if (this.defaultKey === 'map') {
+            echarts.registerMap('china', chinaJson)
+            if (this.defaultActive === 'map-4') {
+              echarts.registerMap('china-contour', chinaContourJson)
+            }
+            if (this.defaultActive === 'map-5') {
+              echarts.registerMap('china-cities', chinaCitiesJson)
+            }
+            if (this.defaultActive === 'map-6') {
+              echarts.registerMap('world', worldJson)
+            }
+          }
           this.myChart = echarts.init(this.$refs.chartDom)
           this.myChart.setOption(this.option)
           this.$emit('setOption', this.option, 1)
+          if (this.defaultActive === 'line-1') {
+            let index = 0; //播放所在下标
+            this.showTipTimer = setInterval(() => {
+              this.myChart.dispatchAction({
+                type: 'showTip',
+                seriesIndex: 0,
+                dataIndex: index
+              });
+              index++;
+              if (index >= this.option.series[0].data.length) {
+                index = 0;
+              }
+            }, 2000)
+            this.myChart.on('mouseover', (params) => {
+              clearInterval(this.showTipTimer);
+              this.myChart.dispatchAction({
+                type: 'showTip',
+                seriesIndex: 0,
+                dataIndex: params.dataIndex,
+              });
+            });
+            this.myChart.on('mouseout', () => {
+              clearInterval(this.showTipTimer);
+              this.showTipTimer = setInterval(()=> {
+                this.myChart.dispatchAction({
+                  type: 'showTip',
+                  seriesIndex: 0,
+                  dataIndex: index
+                });
+                index++;
+                if (index >= this.option.series[0].data.length) {
+                  index = 0;
+                }
+              }, 2000);
+            });
+          } else {
+            clearInterval(this.showTipTimer);
+          }
         } catch (error) {
           this.$message.error("JSON文件格式错误或者代码配置属性错误");
         }
