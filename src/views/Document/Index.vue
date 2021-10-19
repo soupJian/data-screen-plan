@@ -42,14 +42,6 @@
         defaultActive: 'dashboard'
       }
     },
-    methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      }
-    },
     mounted(){
       const path = this.$route.path
       const arr = path.split('/')

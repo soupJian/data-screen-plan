@@ -3,7 +3,7 @@
     <header>
       <el-menu :default-active="activeIndex" class="el-menu" mode="horizontal" @select="handleSelect"
         background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-        <el-menu-item index="logo" disabled style="cursor: pointer;">logologologologologo</el-menu-item>
+        <el-menu-item index="logo" disabled class="logo"><span @click="handleToHome()">数据可视化</span></el-menu-item>
         <el-menu-item index="home">首页</el-menu-item>
         <el-menu-item index="document">文档</el-menu-item>
         <el-menu-item index="example">示例</el-menu-item>
@@ -21,11 +21,21 @@
     methods: {
       handleSelect(key) {
         const arr = this.$route.path.split('/')
-        if(key === arr[1]){
+        if (key === arr[1]) {
           return false
         }
         this.$router.push(`/${key}`)
         this.$store.commit('home/setActiveKey', `${key}`)
+      },
+      handleToHome() {
+        console.log(1);
+        if (this.activeIndex === 'home') { // 如果已经是首页 点击logo 取消事件
+          return false
+        } else { // 如果不是首页 点击logo 取消事件
+          this.$router.push(`/home`)
+          this.$store.commit('home/setActiveKey', `home`)
+          return false
+        }
       }
     },
     computed: {
@@ -81,5 +91,15 @@
 
   .el-menu.el-menu--horizontal {
     border-bottom: 2px solid rgb(84, 92, 100) !important;
+  }
+
+  .logo {
+    cursor: pointer !important;
+    width: 200px;
+    opacity: 1 !important;
+    text-align: center;
+    font-size: 20px !important;
+    font-weight: 600;
+    letter-spacing: 2px;
   }
 </style>

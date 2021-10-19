@@ -647,7 +647,7 @@
             text: ['高', '低'],
             calculable: true,
             inRange: {
-              color: ['#ffffff', '#E0DAFF', '#ADBFFF', '#9CB4FF', '#6A9DFF', '#3889FF']
+              color: ['#E0DAFF', '#ADBFFF', '#9CB4FF', '#6A9DFF', '#3889FF']
             }
           },
           geo: {
@@ -748,6 +748,7 @@
       mapThreeOption() {
         const dataFrom = '北京'
         const option = {
+          backgroundColor: '#0e1c47',
           title: {
             text: '中国地图',
             top: 50,
@@ -763,7 +764,7 @@
             text: ['高', '低'],
             calculable: true,
             inRange: {
-              color: ['#ffffff', '#E0DAFF', '#ADBFFF', '#9CB4FF', '#6A9DFF', '#3889FF']
+              color: ['#E0DAFF', '#ADBFFF', '#9CB4FF', '#6A9DFF', '#3889FF']
             },
             seriesIndex: 0
           },
