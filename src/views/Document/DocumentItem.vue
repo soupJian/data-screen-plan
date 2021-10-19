@@ -63,5 +63,8 @@
 <style lang="less" scoped>
   .markdown-wrap {
     padding: 0 20px;
+    /deep/.el-loading-spinner{
+      top: 50vh !important;
+    }
   }
 </style>
