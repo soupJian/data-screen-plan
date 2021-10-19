@@ -1,12 +1,22 @@
 <template>
-  <div id="chartPie" ref="chartPie"></div>
+  <div id="chartDom" ref="chartDom"></div>
 </template>
 <script>
   import * as echarts from 'echarts'
+  import chinaJson from '@/utils/china.json'
+  import chinaContourJson from '@/utils/china-contour.json'
+  import chinaCitiesJson from '@/utils/china-cities.json'
+  import worldJson from '@/utils/world.json'
+
+  import {
+    visualMapChinaData,
+    geoCoordMap,
+    mapData
+  } from '@/utils/chinaData.js'
   export default {
-    props: ['infoSetting', 'update', 'defaultActive'],
+    props: ['infoSetting', 'update', 'defaultKey', 'defaultActive'],
     mounted() {
-      this.myChart = echarts.init(this.$refs.chartPie)
+      this.myChart = echarts.init(this.$refs.chartDom)
       this.myChart.setOption(this.option)
     },
     computed: {
@@ -546,9 +556,15 @@
             smooth: true,
             showSymbol: false,
             markPoint: {
-                data: [{ type: 'max', name: '最大值' },{ type: 'min', name: '最小值' }],
-                animationDelay: 1000,
-                animationDuration: 1000,
+              data: [{
+                type: 'max',
+                name: '最大值'
+              }, {
+                type: 'min',
+                name: '最小值'
+              }],
+              animationDelay: 1000,
+              animationDuration: 1000,
             },
             lineStyle: {
               width: 2,
@@ -582,6 +598,312 @@
         };
         return option
       },
+      mapOneOption() {
+        const option = {
+          title: {
+            text: '中国地图',
+            top: 50,
+            left: 'center',
+            subtext: '地图轮廓 & 地图热力值'
+          },
+          visualMap: {
+            show: true,
+            min: 0,
+            max: 100,
+            left: 'left',
+            top: 'bottom',
+            text: ['高', '低'],
+            calculable: true,
+            inRange: {
+              color: ['#ffffff', '#E0DAFF', '#ADBFFF', '#9CB4FF', '#6A9DFF', '#3889FF']
+            }
+          },
+          geo: {
+            type: 'map',
+            map: 'china',
+            itemStyle: {
+              borderWidth: '2',
+              borderColor: 'blue'
+            }
+          },
+          series: [{
+            type: 'map',
+            map: 'china',
+            silent: true,
+            itemStyle: {
+              borderWidth: .5
+            },
+            data: visualMapChinaData
+          }]
+        }
+        return option
+      },
+      mapTwoOption() {
+        const option = {
+          title: {
+            text: '中国地图',
+            top: 50,
+            left: 'center',
+            subtext: '点图和涟漪图'
+          },
+          tooltip: {
+            padding: 0,
+            enterable: true,
+            transitionDuration: 1,
+            textStyle: {
+              color: '#000',
+              decoration: 'none',
+            },
+            formatter: function (params) {
+              var tipHtml = '';
+              tipHtml =
+                '<div style="width:80px;height:80px;background:rgba(22,80,158,0.8);border:1px solid rgba(7,166,255,0.7)">' +
+                '<div style="width:100%;height:40px;line-height:40px;border-bottom:2px solid rgba(7,166,255,0.7);padding:0 5px">' +
+                '<i style="display:inline-block;width:8px;height:8px;background:#16d6ff;border-radius:5px;">' +
+                '</i>' +
+                '<span style="margin-left:10px;color:#fff;font-size:16px;">' + params.name + '</span>' + '</div>' +
+                '<div style="padding:5px">' +
+                '<p style="color:#fff;font-size:12px;">' +
+                '总数：' + '<span style="color:#11ee7d;">' + params.value + '</span>' + '个' + '</p>' +
+                '</div>' + '</div>';
+              return tipHtml;
+            }
+          },
+          visualMap: {
+            show: true,
+            min: 0,
+            max: 100,
+            left: 'left',
+            top: 'bottom',
+            text: ['高', '低'],
+            calculable: true,
+            inRange: {
+              color: ['#ffffff', '#E0DAFF', '#ADBFFF', '#9CB4FF', '#6A9DFF', '#3889FF']
+            },
+            seriesIndex: 0
+          },
+          geo: {
+            type: 'map',
+            map: 'china',
+            itemStyle: {
+              borderWidth: '2',
+              borderColor: 'blue'
+            },
+            silent: true
+          },
+          series: [{
+              type: 'map',
+              map: 'china',
+              itemStyle: {
+                borderWidth: .5
+              },
+              data: visualMapChinaData
+            },
+            {
+              type: 'scatter',
+              coordinateSystem: 'geo',
+              symbol: 'image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7',
+              data: this.convertData(mapData.sort(function (a, b) {
+                return b.value - a.value;
+              }).slice(10, -1)),
+            },
+            {
+              type: 'effectScatter',
+              coordinateSystem: 'geo',
+              data: this.convertData(mapData.sort(function (a, b) {
+                return b.value - a.value;
+              }).slice(0, 10)),
+              label: {
+                show: true,
+                position: 'top',
+                formatter: function (params) {
+                  return params.name
+                },
+                fontSize: 12
+              },
+              rippleEffect: {
+                brushType: 'stroke'
+              },
+              itemStyle: {
+                color: 'yellow',
+                shadowBlur: 10,
+                shadowColor: 'yellow'
+              }
+            }
+          ]
+        }
+        return option
+      },
+      mapThreeOption() {
+        const dataFrom = '北京'
+        const option = {
+          title: {
+            text: '中国地图',
+            top: 50,
+            left: 'center',
+            subtext: '飞线图'
+          },
+          visualMap: {
+            show: true,
+            min: 0,
+            max: 100,
+            left: 'left',
+            top: 'bottom',
+            text: ['高', '低'],
+            calculable: true,
+            inRange: {
+              color: ['#ffffff', '#E0DAFF', '#ADBFFF', '#9CB4FF', '#6A9DFF', '#3889FF']
+            },
+            seriesIndex: 0
+          },
+          geo: {
+            type: 'map',
+            map: 'china',
+            itemStyle: {
+              borderWidth: '2',
+              borderColor: 'blue'
+            },
+            silent: true,
+          },
+          series: [{
+              type: 'map',
+              map: 'china',
+              silent: true,
+              itemStyle: {
+                borderWidth: -1
+              },
+              data: visualMapChinaData
+            },
+            {
+              type: 'scatter',
+              coordinateSystem: 'geo',
+              label: {
+                show: true,
+                formatter: function (params) {
+                  return params.name
+                },
+                position: 'top'
+              },
+              symbol: 'image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7',
+              data: this.convertData([{
+                name: "北京",
+                value: 100
+              }]),
+            },
+            {
+              type: 'scatter',
+              coordinateSystem: 'geo',
+              symbol: 'path://M30.9,53.2C16.8,53.2,5.3,41.7,5.3,27.6S16.8,2,30.9,2C45,2,56.4,13.5,56.4,27.6S45,53.2,30.9,53.2z M30.9,3.5C17.6,3.5,6.8,14.4,6.8,27.6c0,13.3,10.8,24.1,24.101,24.1C44.2,51.7,55,40.9,55,27.6C54.9,14.4,44.1,3.5,30.9,3.5z M36.9,35.8c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H36c0.5,0,0.9,0.4,0.9,1V35.8z M27.8,35.8 c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H27c0.5,0,0.9,0.4,0.9,1L27.8,35.8L27.8,35.8z',
+              data: this.convertData(mapData.sort(function (a, b) {
+                return b.value - a.value;
+              }).slice(0, 10)),
+              label: {
+                show: true,
+                formatter: function (params) {
+                  return params.name
+                },
+                position: 'top'
+              }
+            },
+            {
+              type: 'lines',
+              zlevel: 2,
+              lineStyle: {
+                color: 'blue',
+                width: 2,
+                curveness: -.5,
+              },
+              effect: {
+                show: true,
+                symbol: 'triangle',
+                symbolSize: 5,
+                color: '#fff',
+                trailLength: .2,
+              },
+              data: mapData.sort(function (a, b) {
+                return b.value - a.value;
+              }).slice(0, 10).map(function (dataItem) {
+                return {
+                  fromName: dataFrom,
+                  toName: dataItem.name,
+                  coords: [
+                    geoCoordMap[dataFrom],
+                    geoCoordMap[dataItem.name]
+                  ]
+                }
+              })
+            }
+          ]
+        }
+        return option
+      },
+      mapFourOption() {
+        const option = {
+          title: {
+            text: '中国地图',
+            top: 50,
+            left: 'center',
+            subtext: '地推边框线'
+          },
+          series: [{
+              type: 'map',
+              map: 'china-contour',
+              itemStyle: {
+                borderWidth: '2',
+                borderColor: 'blue'
+              },
+              silent: true,
+            },
+            {
+              type: 'map',
+              map: 'china',
+              data: visualMapChinaData
+            }
+          ]
+        }
+        return option
+      },
+      mapFiveOption() {
+        const option = {
+          title: {
+            text: '中国地图',
+            top: 50,
+            left: 'center',
+            subtext: '城市地图'
+          },
+          series: [{
+            type: 'map',
+            map: 'china-contour',
+            top: 75,
+            silent: true,
+            itemStyle: {
+              borderWidth: 2,
+              borderColor: 'red'
+            }
+          }, {
+            type: 'map',
+            map: 'china-cities',
+            itemStyle: {
+              borderColor: 'blue'
+            }
+          }]
+        }
+        return option
+      },
+      mapSixOption() {
+        const option = {
+          title: {
+            text: '世界地图',
+            top: 50,
+            left: 'center',
+          },
+          series: [{
+            type: 'map',
+            map: 'world'
+          }]
+        }
+        return option
+      },
       option() {
         let defaultOption = null
         switch (this.defaultActive) {
@@ -603,6 +925,24 @@
           case 'line-1':
             defaultOption = this.lineOneOption
             break;
+          case 'map-1':
+            defaultOption = this.mapOneOption
+            break;
+          case 'map-2':
+            defaultOption = this.mapTwoOption
+            break;
+          case 'map-3':
+            defaultOption = this.mapThreeOption
+            break;
+          case 'map-4':
+            defaultOption = this.mapFourOption
+            break;
+          case 'map-5':
+            defaultOption = this.mapFiveOption
+            break;
+          case 'map-6':
+            defaultOption = this.mapSixOption
+            break;
         }
         this.$emit('setOption', defaultOption, 1)
         return defaultOption
@@ -620,20 +960,47 @@
         }
       },
       defaultActive() {
-        this.myChart = echarts.dispose(this.$refs.chartPie)
+        if (this.defaultKey === 'map') {
+          echarts.registerMap('china', chinaJson)
+          if (this.defaultActive === 'map-4') {
+            echarts.registerMap('china-contour', chinaContourJson)
+          }
+          if (this.defaultActive === 'map-5') {
+            echarts.registerMap('china-cities', chinaCitiesJson)
+          }
+          if (this.defaultActive === 'map-6') {
+            echarts.registerMap('world', worldJson)
+          }
+        }
+        this.myChart = echarts.dispose(this.$refs.chartDom)
         try {
-          this.myChart = echarts.init(this.$refs.chartPie)
+          this.myChart = echarts.init(this.$refs.chartDom)
           this.myChart.setOption(this.option)
           this.$emit('setOption', this.option, 1)
         } catch (error) {
           this.$message.error("JSON文件格式错误或者代码配置属性错误");
         }
-      }
+      },
     },
+    methods: {
+      convertData(data) {
+        let res = [];
+        for (let i = 0; i < data.length; i++) {
+          let geoCoord = geoCoordMap[data[i].name];
+          if (geoCoord) {
+            res.push({
+              name: data[i].name,
+              value: geoCoord.concat(data[i].value)
+            });
+          }
+        }
+        return res;
+      }
+    }
   }
 </script>
 <style lang="less" scoped>
-  #chartPie {
+  #chartDom {
     width: 100%;
     height: 100%;
   }

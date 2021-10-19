@@ -39,6 +39,30 @@
             <el-menu-item index="line-1">基础折线图</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
+        <el-submenu index="map">
+          <template slot="title">
+            <i class="el-icon-location"></i>
+            <span>地图</span>
+          </template>
+          <el-menu-item-group>
+            <el-menu-item index="map-1">中国地图</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group>
+            <el-menu-item index="map-2">地图点图</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group>
+            <el-menu-item index="map-3">地图飞线</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group>
+            <el-menu-item index="map-4">地图边框线</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group>
+            <el-menu-item index="map-5">城市地图</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group>
+            <el-menu-item index="map-6">世界地图</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
       </el-menu>
     </div>
     <div class="example-right">
@@ -49,7 +73,8 @@
         </div>
       </div>
       <div class="chart-wrap">
-        <chart-view @setOption="setOption" :infoSetting="infoSetting" :update="update" :defaultActive="defaultActive"/>
+        <chart-view @setOption="setOption" :infoSetting="infoSetting" :update="update" :defaultKey="defaultKey"
+          :defaultActive="defaultActive" />
       </div>
     </div>
   </div>
@@ -104,7 +129,7 @@
       },
       setOption(option, type) {
         this.$nextTick(() => {
-          const str = JSON.stringify(option,null, '\t')
+          const str = JSON.stringify(option, null, '\t')
           this.monacoEditor.setValue(str)
           if (type == 1) { // 第一次传值，需要备份下来
             this.infoSettingDefault = str
@@ -143,16 +168,18 @@
     overflow: auto;
 
     .example-left {
-      width: 150px;
+      width: 200px;
       position: fixed;
       left: 0;
-      bottom: 0;
+      height: calc(100vh - 61px);
       top: 61px;
       z-index: 10;
 
       .el-menu {
         height: 100%;
         max-height: none;
+        overflow-y: auto;
+
       }
     }
 
