@@ -1,5 +1,5 @@
 const state = {
-  activeKey: sessionStorage.getItem('activeKey') || '/home', // 激活的tab
+  activeKey: sessionStorage.getItem('activeKey') || 'home', // 激活的tab
 }
 
 const mutations = {
