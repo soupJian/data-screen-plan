@@ -67,7 +67,8 @@
     </div>
     <div class="example-right">
       <div class="edit" ref="edit">
-        <MonacoEditor srcPath="" language="json" :code="code" :key="randomkey" :editorOptions="options" @mounted="onMounted">
+        <MonacoEditor srcPath="" language="json" :code="code" :key="randomkey" :editorOptions="options"
+          @mounted="onMounted">
         </MonacoEditor>
         <div class="button-wrap">
           <button @click="updateChart">更新</button>
@@ -177,7 +178,8 @@
     .example-right {
       margin-left: 200px;
       display: flex;
-      overflow: auto;
+      height: calc(100vh - 61px);
+      overflow: hidden;
 
       .edit {
         flex: 5;
