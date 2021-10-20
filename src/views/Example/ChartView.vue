@@ -13,7 +13,7 @@
     mapData
   } from '@/utils/chinaData.js'
   export default {
-    props: ['infoSetting', 'update', 'defaultKey', 'defaultActive'],
+    props: ['code', 'update', 'defaultKey', 'defaultActive'],
     data() {
       return {
         showTipTimer: null
@@ -884,15 +884,6 @@
           },
           series: [{
             type: 'map',
-            map: 'china-contour',
-            top: 75,
-            silent: true,
-            itemStyle: {
-              borderWidth: 2,
-              borderColor: 'red'
-            }
-          }, {
-            type: 'map',
             map: 'china-cities',
             itemStyle: {
               borderColor: 'blue'
@@ -963,8 +954,8 @@
       update() {
         if (this.update) {
           try {
-            this.myChart.setOption(JSON.parse(this.infoSetting))
-            this.$emit('setOption', JSON.parse(this.infoSetting), 2)
+            this.myChart.setOption(JSON.parse(this.code))
+            this.$emit('setOption', JSON.parse(this.code), 2)
           } catch (error) {
             this.$message.error("JSON文件格式错误或者代码配置属性错误");
           }

@@ -5,10 +5,6 @@ import store from './store'
 import highlight from 'highlight.js';
 // 按需导入element.js
 import './utils/element'
-// 编辑器语法高亮
-import 'monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution';
-// 查找功能
-import 'monaco-editor/esm/vs/editor/contrib/find/findController.js';
 // 按需引入 echarts 5.x
 import echarts from './utils/echarts'
 

@@ -67,13 +67,15 @@
     </div>
     <div class="example-right">
       <div class="edit" ref="edit">
+        <MonacoEditor srcPath="" language="json" :code="code" :key="randomkey" :editorOptions="options" @mounted="onMounted">
+        </MonacoEditor>
         <div class="button-wrap">
           <button @click="updateChart">更新</button>
           <button @click="resetChart">重置</button>
         </div>
       </div>
       <div class="chart-wrap">
-        <chart-view @setOption="setOption" :infoSetting="infoSetting" :update="update" :defaultKey="defaultKey"
+        <chart-view @setOption="setOption" :code="code" :update="update" :defaultKey="defaultKey"
           :defaultActive="defaultActive" />
       </div>
     </div>
@@ -81,20 +83,28 @@
 
 </template>
 <script>
-  import * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
+  import MonacoEditor from 'vue-monaco-editor'
   import ChartView from './ChartView.vue'
   export default {
     components: {
+      MonacoEditor,
       ChartView
     },
     data() {
       return {
-        defaultKey: 'pie',
-        defaultActive: 'pie-1',
-        monacoEditor: null,
-        infoSetting: '',
-        infoSettingDefault: '',
-        update: false,
+        defaultKey: 'pie', // 点击左侧第几个menu-sub-item
+        defaultActive: 'pie-1', // 点击左侧menu-item-grouo
+        update: false, // 判断是否点击了更新
+        editor: null,
+        code: '',
+        codeCopy: '',
+        options: {
+          folding: true,
+          showFoldingControls: 'always',
+          tabSize: 2,
+          // selectOnLineNumbers: false
+        },
+        randomkey: 0
       }
     },
     methods: {
@@ -102,58 +112,39 @@
         this.defaultKey = path[0]
         this.defaultActive = key
       },
-      initEdit() {
-        this.monacoEditor = monaco.editor.create(this.$refs.edit, {
-          value: `${JSON.stringify('')}`,
-          language: "javascript",
-          theme: "vs-dark",
-          tabSize: 2,
-          formatOnPaste: true, // 复制粘贴的时候格式化
-          automaticLayout: true, // 编辑器自适应布局
-          overviewRulerBorder: false,
-          scrollBeyondLastLine: false, // 滚动配置，溢出才滚动
-        })
-        //获取值
-        // this.monacoEditor.getValue()
-        // 赋值
-        // this.monacoEditor.setValue(this.value)
-        // 失焦时候监听值变化
-        // this.monacoEditor.onDidBlurEditorText(() => {
-        //   this.$emit('update', this.monacoEditor.getValue())
-        // })
-        // 监听值变化
-        // this.monacoEditor.onDidChangeModelContent( () => {
-        //   this.infoSetting = this.monacoEditor.getValue()
-        //   // this.$emit('update', this.monacoEditor.getValue()) //使value和其值保持一致
-        // })
-      },
       setOption(option, type) {
         this.$nextTick(() => {
-          const str = JSON.stringify(option, null, '\t')
-          this.monacoEditor.setValue(str)
+          const str = JSON.stringify(option, null, ' ')
+          this.code = str
+          this.createRamdomKey()
           if (type == 1) { // 第一次传值，需要备份下来
-            this.infoSettingDefault = str
+            this.codeCopy = str
           }
         })
       },
       updateChart() {
-        this.infoSetting = this.monacoEditor.getValue()
+        this.code = this.editor.getValue()
         this.update = true
         setTimeout(() => {
           this.update = false
         }, 500);
       },
       resetChart() {
-        this.infoSetting = this.infoSettingDefault
+        this.code = this.codeCopy
         this.update = true
+        this.createRamdomKey()
         setTimeout(() => {
           this.update = false
         }, 500);
+      },
+      onMounted(editor) {
+        this.editor = editor;
+      },
+      // createRamdomKey随机生成值，其值类似于id。该方法最为重要，在给code赋值之后，调用这个方法
+      createRamdomKey() {
+        this.randomkey = this.randomkey + Math.floor(Math.random() * 100);
       }
     },
-    mounted() {
-      this.initEdit()
-    }
   }
 </script>
 <style lang="less" scoped>
@@ -184,7 +175,7 @@
     }
 
     .example-right {
-      margin-left: 150px;
+      margin-left: 200px;
       display: flex;
       overflow: auto;
 
@@ -192,6 +183,7 @@
         flex: 5;
         height: calc(100vh - 61px);
         position: relative;
+        background: #1E1E1E;
 
         .button-wrap {
           position: absolute;
