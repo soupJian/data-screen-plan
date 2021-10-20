@@ -2,7 +2,6 @@
   <div id="chartDom" ref="chartDom"></div>
 </template>
 <script>
-  import * as echarts from 'echarts'
   import chinaJson from '@/utils/china.json'
   import chinaContourJson from '@/utils/china-contour.json'
   import chinaCitiesJson from '@/utils/china-cities.json'
@@ -21,7 +20,7 @@
       }
     },
     mounted() {
-      this.myChart = echarts.init(this.$refs.chartDom)
+      this.myChart = this.$echarts.init(this.$refs.chartDom)
       this.myChart.setOption(this.option)
     },
     computed: {
@@ -186,7 +185,7 @@
               name: 'two',
               data: [120, 200, 150, 80, 70, 110, 120],
               itemStyle: {
-                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                color: new this.$echarts.graphic.LinearGradient(0, 1, 0, 0, [{
                   offset: 0,
                   color: '#3782AD'
                 }, {
@@ -341,7 +340,7 @@
                 position: 'inside'
               },
               itemStyle: {
-                color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                color: new this.$echarts.graphic.LinearGradient(0, 1, 0, 0, [{
                   offset: 0,
                   color: '#3782AD'
                 }, {
@@ -569,7 +568,7 @@
               }
             },
             areaStyle: { //区域填充样式
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+              color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
                   color: "rgba(25,163,223,.3)"
                 },
@@ -613,7 +612,7 @@
             },
             areaStyle: { //区域填充样式
               //线性渐变，前4个参数分别是x0,y0,x2,y2(范围0~1);相当于图形包围盒中的百分比。如果最后一个参数是‘true’，则该四个值是绝对像素位置。
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+              color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                   offset: 0,
                   color: "rgba(10,219,250,.3)"
                 },
@@ -973,21 +972,21 @@
       },
       defaultActive() {
         clearInterval(this.showTipTimer);
-        this.myChart = echarts.dispose(this.$refs.chartDom)
+        this.myChart = this.$echarts.dispose(this.$refs.chartDom)
         try {
           if (this.defaultKey === 'map') {
-            echarts.registerMap('china', chinaJson)
+            this.$echarts.registerMap('china', chinaJson)
             if (this.defaultActive === 'map-4') {
-              echarts.registerMap('china-contour', chinaContourJson)
+              this.$echarts.registerMap('china-contour', chinaContourJson)
             }
             if (this.defaultActive === 'map-5') {
-              echarts.registerMap('china-cities', chinaCitiesJson)
+              this.$echarts.registerMap('china-cities', chinaCitiesJson)
             }
             if (this.defaultActive === 'map-6') {
-              echarts.registerMap('world', worldJson)
+              this.$echarts.registerMap('world', worldJson)
             }
           }
-          this.myChart = echarts.init(this.$refs.chartDom)
+          this.myChart = this.$echarts.init(this.$refs.chartDom)
           this.myChart.setOption(this.option)
           this.$emit('setOption', this.option, 1)
           if (this.defaultActive === 'line-1') {

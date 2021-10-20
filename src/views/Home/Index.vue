@@ -14,7 +14,6 @@
   </div>
 </template>
 <script>
-  import * as echarts from 'echarts'
   export default {
     data() {
       return {
@@ -79,7 +78,7 @@
       }
     },
     mounted() {
-      this.myChart = echarts.init(this.$refs.myChart)
+      this.myChart = this.$echarts.init(this.$refs.myChart)
       this.initChart()
     }
   }
