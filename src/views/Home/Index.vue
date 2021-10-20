@@ -23,7 +23,6 @@
     methods: {
       handleRouterChange(type) {
         this.$router.push(`/${type}`)
-        this.$store.commit('home/setActiveKey', `${type}`)
       },
       initChart() {
         const option = {

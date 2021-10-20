@@ -41,7 +41,16 @@
     computed: {
       ...mapState({
         activeIndex: state => state.home.activeKey
-      })
+      }),
+      path(){
+        return this.$route.path
+      }
+    },
+    watch:{
+      path(){
+        const arr = this.path.split('/')
+        this.$store.commit('home/setActiveKey', arr[1])
+      }
     }
   }
 </script>
