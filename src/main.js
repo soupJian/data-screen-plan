@@ -2,15 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
 import highlight from 'highlight.js';
+import './utils/element'
 // 编辑器语法高亮
 import 'monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution';
 // 查找功能
 import 'monaco-editor/esm/vs/editor/contrib/find/findController.js';
 
-Vue.use(ElementUI);
 Vue.use(highlight);
 Vue.config.productionTip = false
 
