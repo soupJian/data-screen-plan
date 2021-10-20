@@ -6,6 +6,8 @@ import {
   LineChart,
   BarChart,
   LinesChart,
+  ScatterChart,
+  EffectScatterChart,
   MapChart
 } from 'echarts/charts';
 // 引入提示框，标题，直角坐标系等组件，组件后缀都为 Component
@@ -40,6 +42,8 @@ echarts.use(
     BarChart,
     LinesChart,
     MapChart,
+    ScatterChart,
+    EffectScatterChart,
     CanvasRenderer
   ]
 )
