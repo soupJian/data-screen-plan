@@ -21,7 +21,7 @@
     },
     mounted() {
       this.myChart = this.$echarts.init(this.$refs.chartDom)
-      this.myChart.setOption(this.option)
+      this.myChart.setOption(this.option,true)
     },
     computed: {
       pieOneOption() {
@@ -954,7 +954,7 @@
       update() {
         if (this.update) {
           try {
-            this.myChart.setOption(JSON.parse(this.code))
+            this.myChart.setOption(JSON.parse(this.code),true)
             this.$emit('setOption', JSON.parse(this.code), 2)
           } catch (error) {
             this.$message.error("JSON文件格式错误或者代码配置属性错误");
@@ -978,7 +978,7 @@
             }
           }
           this.myChart = this.$echarts.init(this.$refs.chartDom)
-          this.myChart.setOption(this.option)
+          this.myChart.setOption(this.option,true)
           this.$emit('setOption', this.option, 1)
           if (this.defaultActive === 'line-1') {
             let index = 0; //播放所在下标
