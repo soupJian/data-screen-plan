@@ -554,16 +554,16 @@
               },
               formatter: function (params) {
                 const tipHtml =
-                  '<div style="width:80px;height:80px;background:rgba(22,80,158,0.8);border:1px solid rgba(7,166,255,0.7)">' +
-                  '<div style="width:100%;height:40px;line-height:40px;border-bottom:2px solid rgba(7,166,255,0.7);padding:0 5px">' +
-                  '<i style="display:inline-block;width:8px;height:8px;background:#16d6ff;border-radius:5px;">' +
-                  '</i>' +
-                  '<span style="margin-left:10px;color:#fff;font-size:16px;">' + params.name + '</span>' +
-                  '</div>' +
-                  '<div style="padding:5px">' +
-                  '<p style="color:#fff;font-size:12px;">' +
-                  '总数：' + '<span style="color:#11ee7d;">' + params.value + '</span>' + '个' + '</p>' +
-                  '</div>' + '</div>';
+                  `<div style="width:80px;height:80px;background:rgba(22,80,158,0.8);border:1px solid rgba(7,166,255,0.7)">
+                  <div style="width:100%;height:40px;line-height:40px;border-bottom:2px solid rgba(7,166,255,0.7);padding:0 5px">
+                  <i style="display:inline-block;width:8px;height:8px;background:#16d6ff;border-radius:5px;">
+                  </i>
+                  <span style="margin-left:10px;color:#fff;font-size:16px;"> ${params.name}</span>
+                  </div>
+                  <div style="padding:5px">
+                  <p style="color:#fff;font-size:12px;">
+                  总数：<span style="color:#11ee7d;">${params.value}</span>个</p>
+                  </div></div>`;
                 return tipHtml;
               }
             },
