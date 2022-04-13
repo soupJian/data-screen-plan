@@ -3,7 +3,6 @@ import {
   geoCoordMap,
   mapData
 } from '@/utils/chinaData.js'
-import echarts from '@/utils/echarts'
 const convertData = (data) => {
   let res = [];
   for (let i = 0; i < data.length; i++) {
@@ -18,7 +17,7 @@ const convertData = (data) => {
   return res;
 }
 // 饼图
-export const pieOneOption = {
+export const pieOneOption = `const option = {
   title: {
     text: '基础饼图',
     top: 10,
@@ -44,7 +43,7 @@ export const pieOneOption = {
       borderRadius: 8
     },
     label: {
-      formatter: '{b}\n{d}%',
+      formatter: '{b}',
       lineHeight: 16,
       fontSize: 12,
     },
@@ -91,9 +90,9 @@ export const pieOneOption = {
       }
     ],
   }]
-}
+}`
 // 柱状图
-export const barOneOption = {
+export const barOneOption = `const option = {
   grid: {
     bottom: 150,
     left: 50,
@@ -126,7 +125,7 @@ export const barOneOption = {
             if (p == rowNumber - 1) {
               tempStr = params.substring(start, paramsNameNumber);
             } else {
-              tempStr = params.substring(start, end) + "\n";
+              tempStr = params.substring(start, end);
             }
             newParamsName += tempStr;
           }
@@ -191,8 +190,8 @@ export const barOneOption = {
       },
     }
   ]
-}
-export const barTwoOption = {
+}`
+export const barTwoOption = `const option = {
   tooltip: {
     trigger: 'axis'
   },
@@ -213,7 +212,7 @@ export const barTwoOption = {
             if (p == rowNumber - 1) {
               tempStr = params.substring(start, paramsNameNumber);
             } else {
-              tempStr = params.substring(start, end) + "\n";
+              tempStr = params.substring(start, end);
             }
             newParamsName += tempStr;
           }
@@ -269,8 +268,8 @@ export const barTwoOption = {
       data: [20, 150, 90, 180, 50, 60, 120]
     }
   ]
-}
-export const barThreeOption = {
+}`
+export const barThreeOption = `const option = {
   grid: {
     bottom: 150,
     left: 50,
@@ -335,8 +334,8 @@ export const barThreeOption = {
       },
     }
   ]
-}
-export const barFourOption = {
+}`
+export const barFourOption = `const option = {
   grid: {
     bottom: 150,
     left: 50,
@@ -419,12 +418,9 @@ export const barFourOption = {
       color: 'skyblue'
     }
   }]
-}
+}`
 // 线图
-const xLabel = ['1', '2', '3', '4', '5', '6']
-const goToSchool = ["40", "80", "32", "85", "50", "40"]
-const goOutSchool = ["20", "50", "12", "65", "30", "60"]
-export const lineOneOption = {
+export const lineOneOption = `const option = {
   backgroundColor: '#0e1c47',
   legend: {
     align: "left",
@@ -467,7 +463,7 @@ export const lineOneOption = {
     axisTick: {
       show: false,
     },
-    data: xLabel
+    data: ['1', '2', '3', '4', '5', '6']
   }],
   yAxis: [{
     name: '人数',
@@ -534,16 +530,16 @@ export const lineOneOption = {
       },
       formatter: function (params) {
         const tipHtml =
-          `<div style="width:80px;height:80px;background:rgba(22,80,158,0.8);border:1px solid rgba(7,166,255,0.7)">
-          <div style="width:100%;height:40px;line-height:40px;border-bottom:2px solid rgba(7,166,255,0.7);padding:0 5px">
-          <i style="display:inline-block;width:8px;height:8px;background:#16d6ff;border-radius:5px;">
-          </i>
-          <span style="margin-left:10px;color:#fff;font-size:16px;"> ${params.name}</span>
-          </div>
-          <div style="padding:5px">
-          <p style="color:#fff;font-size:12px;">
-          总数：<span style="color:#11ee7d;">${params.value}</span>个</p>
-          </div></div>`;
+          '<div style="width:80px;height:80px;background:rgba(22,80,158,0.8);border:1px solid rgba(7,166,255,0.7)">'+
+          '<div style="width:100%;height:40px;line-height:40px;border-bottom:2px solid rgba(7,166,255,0.7);padding:0 5px">'+
+          '<i style="display:inline-block;width:8px;height:8px;background:#16d6ff;border-radius:5px;">'+
+          '</i>'+
+          '<span style="margin-left:10px;color:#fff;font-size:16px;"> params.name</span>'+
+          '</div>'+
+          '<div style="padding:5px">'+
+          '<p style="color:#fff;font-size:12px;">'+
+          '总数：<span style="color:#11ee7d;">params.value</span>个</p>'+
+          '</div></div>';
         return tipHtml;
       }
     },
@@ -560,7 +556,7 @@ export const lineOneOption = {
       shadowColor: 'rgba(25,163,223, 0.5)', //阴影颜色
       shadowBlur: 20
     },
-    data: goToSchool
+    data: [40,80,32,85,50,40]
   }, {
     name: '数据二',
     type: 'line',
@@ -604,11 +600,11 @@ export const lineOneOption = {
       shadowColor: 'rgba(10,219,250, 0.5)', //阴影颜色
       shadowBlur: 20 //shadowBlur设图形阴影的模糊大小。配合shadowColor,shadowOffsetX/Y, 设置图形的阴影效果。
     },
-    data: goOutSchool
+    data: [20,50,12,65,30,60]
   }]
-}
+}`
 // 地图 点图，飞线图
-export const mapOneOption = {
+export const mapOneOption = `const option = {
   title: {
     text: '中国地图',
     top: 50,
@@ -642,10 +638,10 @@ export const mapOneOption = {
     itemStyle: {
       borderWidth: .5
     },
-    data: visualMapChinaData
+    data: [${visualMapChinaData}]
   }]
-}
-export const mapTwoOption = {
+}`
+export const mapTwoOption = `const option = {
   title: {
     text: '中国地图',
     top: 50,
@@ -696,22 +692,22 @@ export const mapTwoOption = {
         borderWidth: .5
       },
       silent: true,
-      data: visualMapChinaData
+      data: ${visualMapChinaData}
     },
     {
       type: 'scatter',
       coordinateSystem: 'geo',
       symbol: 'image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7',
-      data: convertData(mapData.sort(function (a, b) {
+      data: ${convertData(mapData.sort(function (a, b) {
         return b.value - a.value;
-      }).slice(10, -1)),
+      }).slice(10, -1))},
     },
     {
       type: 'effectScatter',
       coordinateSystem: 'geo',
-      data: convertData(mapData.sort(function (a, b) {
+      data: ${convertData(mapData.sort(function (a, b) {
         return b.value - a.value;
-      }).slice(0, 10)),
+      }).slice(0, 10))},
       label: {
         show: true,
         position: 'top',
@@ -730,9 +726,9 @@ export const mapTwoOption = {
       }
     }
   ]
-}
+}`
 const dataFrom = '北京'
-export const mapThreeOption = {
+export const mapThreeOption = `const option = {
   backgroundColor: '#0e1c47',
   title: {
     text: '中国地图',
@@ -769,7 +765,7 @@ export const mapThreeOption = {
       itemStyle: {
         borderWidth: -1
       },
-      data: visualMapChinaData
+      data: ${visualMapChinaData}
     },
     {
       type: 'scatter',
@@ -782,18 +778,18 @@ export const mapThreeOption = {
         position: 'top'
       },
       symbol: 'image://data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7',
-      data: convertData([{
+      data: ${convertData([{
         name: "北京",
         value: 100
-      }]),
+      }])},
     },
     {
       type: 'scatter',
       coordinateSystem: 'geo',
       symbol: 'path://M30.9,53.2C16.8,53.2,5.3,41.7,5.3,27.6S16.8,2,30.9,2C45,2,56.4,13.5,56.4,27.6S45,53.2,30.9,53.2z M30.9,3.5C17.6,3.5,6.8,14.4,6.8,27.6c0,13.3,10.8,24.1,24.101,24.1C44.2,51.7,55,40.9,55,27.6C54.9,14.4,44.1,3.5,30.9,3.5z M36.9,35.8c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H36c0.5,0,0.9,0.4,0.9,1V35.8z M27.8,35.8 c0,0.601-0.4,1-0.9,1h-1.3c-0.5,0-0.9-0.399-0.9-1V19.5c0-0.6,0.4-1,0.9-1H27c0.5,0,0.9,0.4,0.9,1L27.8,35.8L27.8,35.8z',
-      data: convertData(mapData.sort(function (a, b) {
+      data: ${convertData(mapData.sort(function (a, b) {
         return b.value - a.value;
-      }).slice(0, 10)),
+      }).slice(0, 10))},
       label: {
         show: true,
         formatter: function (params) {
@@ -821,18 +817,18 @@ export const mapThreeOption = {
         return b.value - a.value;
       }).slice(0, 10).map(function (dataItem) {
         return {
-          fromName: dataFrom,
+          fromName: ${dataFrom},
           toName: dataItem.name,
           coords: [
-            geoCoordMap[dataFrom],
+            geoCoordMap[${dataFrom}],
             geoCoordMap[dataItem.name]
           ]
         }
       })
     }
   ]
-}
-export const mapFourOption = {
+}`
+export const mapFourOption = `const option = {
   title: {
     text: '中国地图',
     top: 50,
@@ -851,11 +847,11 @@ export const mapFourOption = {
     {
       type: 'map',
       map: 'china',
-      data: visualMapChinaData
+      data: ${visualMapChinaData}
     }
   ]
-}
-export const mapFiveOption =  {
+}`
+export const mapFiveOption =  `const option = {
   title: {
     text: '中国地图',
     top: 50,
@@ -869,8 +865,8 @@ export const mapFiveOption =  {
       borderColor: 'blue'
     }
   }]
-}
-export const mapSixOption = {
+}`
+export const mapSixOption = `const option = {
   title: {
     text: '世界地图',
     top: 50,
@@ -880,4 +876,4 @@ export const mapSixOption = {
     type: 'map',
     map: 'world'
   }]
-}
+}`

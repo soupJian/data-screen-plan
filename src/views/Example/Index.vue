@@ -1,21 +1,20 @@
 <template>
   <div class="example">
     <div class="example-left">
-      <my-menu :defaultKey="defaultKey" :defaultActive="defaultActive" @selectItem="selectItem"/>
+      <my-menu :defaultKey="defaultKey" :defaultActive="defaultActive" @selectItem="selectItem" />
     </div>
     <div class="example-right">
       <div class="edit" ref="edit">
-        <MonacoEditor srcPath="" language="json" :code="code" :key="randomkey" :editorOptions="options"
-          @mounted="onMounted">
+        <MonacoEditor srcPath="" language="javascript" :code="editorCode" :key="randomkey"
+          :editorOptions="editorOptions" @mounted="editMounted">
         </MonacoEditor>
         <div class="button-wrap">
-          <button @click="updateChart">更新</button>
-          <button @click="resetChart">重置</button>
+          <button @click="updateChart('update')">更新</button>
+          <button @click="updateChart('reset')">重置</button>
         </div>
       </div>
       <div class="chart-wrap">
-        <chart-view @setOption="setOption" :code="code" :update="update" :defaultKey="defaultKey"
-          :defaultActive="defaultActive" />
+        <chart-view :option="chartOption" />
       </div>
     </div>
   </div>
@@ -25,6 +24,20 @@
   import MonacoEditor from 'vue-monaco-editor'
   import ChartView from './ChartView.vue'
   import MyMenu from './Menu.vue'
+  import {
+    pieOneOption,
+    barOneOption,
+    barTwoOption,
+    barThreeOption,
+    barFourOption,
+    lineOneOption,
+    mapOneOption,
+    mapTwoOption,
+    mapThreeOption,
+    mapFourOption,
+    mapFiveOption,
+    mapSixOption
+  } from './chartOption'
   export default {
     components: {
       MonacoEditor,
@@ -34,58 +47,100 @@
     data() {
       return {
         defaultKey: 'pie', // 点击左侧第几个menu-sub-item
-        defaultActive: 'pie-1', // 点击左侧menu-item-grouo
+        defaultActive: 'pie-1', // 点击左侧menu-item-groups
         update: false, // 判断是否点击了更新
         editor: null,
-        code: '',
-        codeCopy: '',
-        options: {
+        editorCode: '',
+        chartOption: pieOneOption, // 地图的option
+        chartOptionCopy: pieOneOption, // 备份地图的option
+        editorOptions: { // 编辑器option
           folding: true,
           showFoldingControls: 'always',
-          tabSize: 2,
-          // selectOnLineNumbers: false
+          tabSize: 2
         },
         randomkey: 0
       }
     },
     methods: {
-      selectItem(key, path){
+      selectItem(key, path) {
         this.defaultKey = path[0]
         this.defaultActive = key
+        this.changeChartOption()
       },
-      setOption(option, type) {
-        this.$nextTick(() => {
-          const str = JSON.stringify(option, null, ' ')
-          this.code = str
-          this.createRamdomKey()
-          if (type == 1) { // 第一次传值，需要备份下来
-            this.codeCopy = str
-          }
-        })
-      },
-      updateChart() {
-        this.code = this.editor.getValue()
-        this.update = true
-        setTimeout(() => {
-          this.update = false
-        }, 500);
-      },
-      resetChart() {
-        this.code = this.codeCopy
-        this.update = true
+      // 切换菜单栏，修改option
+      changeChartOption() {
+        let defaultOption = null
+        switch (this.defaultActive) {
+          case 'pie-1':
+            defaultOption = pieOneOption
+            break;
+          case 'bar-1':
+            defaultOption = barOneOption
+            break;
+          case 'bar-2':
+            defaultOption = barTwoOption
+            break;
+          case 'bar-3':
+            defaultOption = barThreeOption
+            break;
+          case 'bar-4':
+            defaultOption = barFourOption
+            break;
+          case 'line-1':
+            defaultOption = lineOneOption
+            break;
+          case 'map-1':
+            defaultOption = mapOneOption
+            break;
+          case 'map-2':
+            defaultOption = mapTwoOption
+            break;
+          case 'map-3':
+            defaultOption = mapThreeOption
+            break;
+          case 'map-4':
+            defaultOption = mapFourOption
+            break;
+          case 'map-5':
+            defaultOption = mapFiveOption
+            break;
+          case 'map-6':
+            defaultOption = mapSixOption
+            break;
+        }
         this.createRamdomKey()
-        setTimeout(() => {
-          this.update = false
-        }, 500);
+        this.chartOption = defaultOption
+        this.chartOptionCopy = defaultOption
+        this.updateEditorCode(this.chartOption)
       },
-      onMounted(editor) {
+      // 更新
+      updateChart(type) {
+        // type ==> update/reset
+        if (type == 'update') {
+          this.chartOption = this.editor.getValue()
+        } else {
+          this.chartOption = this.chartOptionCopy
+          this.updateEditorCode(this.chartOptionCopy)
+        }
+      },
+      // 挂载编辑器
+      editMounted(editor) {
         this.editor = editor;
       },
       // createRamdomKey随机生成值，其值类似于id。该方法最为重要，在给code赋值之后，调用这个方法
       createRamdomKey() {
         this.randomkey = this.randomkey + Math.floor(Math.random() * 100);
-      }
+      },
+      updateEditorCode(option) {
+        this.editorCode = option
+      },
     },
+    mounted() {
+      this.$nextTick(()=>{
+        this.updateEditorCode(this.chartOption)
+      })
+    }
+
   }
 </script>
 <style lang="less" scoped>

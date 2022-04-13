@@ -6,93 +6,49 @@
   import chinaContourJson from '@/utils/china-contour.json'
   import chinaCitiesJson from '@/utils/china-cities.json'
   import worldJson from '@/utils/world.json'
-  import {pieOneOption,barOneOption,barTwoOption,barThreeOption,barFourOption,lineOneOption,mapOneOption,mapTwoOption,mapThreeOption,mapFourOption,mapFiveOption,mapSixOption} from './chartOption'
   export default {
-    props: ['code', 'update', 'defaultKey', 'defaultActive'],
+    props: ['option'],
     data() {
       return {
-        showTipTimer: null
+        showTipTimer: null,
       }
     },
     mounted() {
+      // this.changeActive()
       this.myChart = this.$echarts.init(this.$refs.chartDom)
-      this.myChart.setOption(this.option,true)
+      this.setOption()
     },
-    computed: {
-      option() {
-        let defaultOption = null
-        switch (this.defaultActive) {
-          case 'pie-1':
-            defaultOption = pieOneOption
-            break;
-          case 'bar-1':
-            defaultOption = barOneOption
-            break;
-          case 'bar-2':
-            defaultOption = barTwoOption
-            break;
-          case 'bar-3':
-            defaultOption = barThreeOption
-            break;
-          case 'bar-4':
-            defaultOption = barFourOption
-            break;
-          case 'line-1':
-            defaultOption = lineOneOption
-            break;
-          case 'map-1':
-            defaultOption = mapOneOption
-            break;
-          case 'map-2':
-            defaultOption = mapTwoOption
-            break;
-          case 'map-3':
-            defaultOption = mapThreeOption
-            break;
-          case 'map-4':
-            defaultOption = mapFourOption
-            break;
-          case 'map-5':
-            defaultOption = mapFiveOption
-            break;
-          case 'map-6':
-            defaultOption = mapSixOption
-            break;
-        }
-        this.$emit('setOption', defaultOption, 1)
-        return defaultOption
+    methods:{
+      setOption(){
+        // 将字符串转化为 对象
+        const chartOption = new Function('echarts',`try{
+          ${this.option}
+          if(option){
+            return option
+          }
+        }catch(e){console.log(e)}`)(this.$echarts)
+        this.myChart.setOption(chartOption, true)
       }
     },
     watch: {
-      update() {
-        if (this.update) {
-          try {
-            this.myChart.setOption(JSON.parse(this.code),true)
-            this.$emit('setOption', JSON.parse(this.code), 2)
-          } catch (error) {
-            this.$message.error("JSON文件格式错误或者代码配置属性错误");
-          }
-        }
-      },
-      defaultActive() {
-        clearInterval(this.showTipTimer);
+      // 修改左侧菜单栏
+      option() {
+        this.showTipTimer && clearInterval(this.showTipTimer);
         this.myChart = this.$echarts.dispose(this.$refs.chartDom)
         try {
           if (this.defaultKey === 'map') {
-            this.$echarts.registerMap('china', chinaJson)
             if (this.defaultActive === 'map-4') {
               this.$echarts.registerMap('china-contour', chinaContourJson)
-            }
-            if (this.defaultActive === 'map-5') {
+            }else if (this.defaultActive === 'map-5') {
               this.$echarts.registerMap('china-cities', chinaCitiesJson)
-            }
-            if (this.defaultActive === 'map-6') {
+            }else if (this.defaultActive === 'map-6') {
               this.$echarts.registerMap('world', worldJson)
+            }else{
+              this.$echarts.registerMap('china', chinaJson)
             }
           }
           this.myChart = this.$echarts.init(this.$refs.chartDom)
-          this.myChart.setOption(this.option,true)
-          this.$emit('setOption', this.option, 1)
+          this.setOption()
           if (this.defaultActive === 'line-1') {
             let index = 0; //播放所在下标
             this.showTipTimer = setInterval(() => {
@@ -116,7 +72,7 @@
             });
             this.myChart.on('mouseout', () => {
               clearInterval(this.showTipTimer);
-              this.showTipTimer = setInterval(()=> {
+              this.showTipTimer = setInterval(() => {
                 this.myChart.dispatchAction({
                   type: 'showTip',
                   seriesIndex: 0,
@@ -134,7 +90,7 @@
         } catch (error) {
           this.$message.error("JSON文件格式错误或者代码配置属性错误");
         }
-      },
+      }
     }
   }
 </script>
