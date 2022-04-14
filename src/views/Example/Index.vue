@@ -9,6 +9,7 @@
           :editorOptions="editorOptions" @mounted="editMounted">
         </MonacoEditor>
         <div class="button-wrap">
+          <button @click="formatCode()">格式化代码</button>
           <button @click="updateChart('update')">更新</button>
           <button @click="updateChart('reset')">重置</button>
         </div>
@@ -114,6 +115,10 @@
         this.chartOptionCopy = defaultOption
         this.updateEditorCode(this.chartOption)
       },
+      // 格式化代码
+      formatCode(){
+        this.editor.getAction('editor.action.formatDocument').run()  //格式化
+      },
       // 更新
       updateChart(type) {
         // type ==> update/reset
@@ -183,7 +188,7 @@
         .button-wrap {
           position: absolute;
           top: 0;
-          right: -100px;
+          right: -168px;
           z-index: 1;
         }
       }
