@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="chart-wrap">
-        <chart-view :option="chartOption" />
+        <chart-view :option="chartOption" :defaultKey="defaultKey" :defaultActive="defaultActive" />
       </div>
     </div>
   </div>
@@ -55,6 +55,7 @@
         chartOptionCopy: pieOneOption, // 备份地图的option
         editorOptions: { // 编辑器option
           folding: true,
+          automaticLayout: true, // 自适应布局
           showFoldingControls: 'always',
           tabSize: 2
         },
@@ -135,12 +136,9 @@
         this.editorCode = option
       },
     },
-    mounted() {
-      this.$nextTick(()=>{
-        this.updateEditorCode(this.chartOption)
-      })
+    mounted(){
+      this.changeChartOption()
     }
-
   }
 </script>
 <style lang="less" scoped>
