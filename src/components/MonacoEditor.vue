@@ -3,7 +3,10 @@
 </template>
 
 <script>
-import * as monaco from "monaco-editor/esm/vs/editor/editor.main";
+// import * as monaco from "monaco-editor/esm/vs/editor/editor.main";
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api'
+import 'monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution'
+import 'monaco-editor/esm/vs/editor/contrib/find/findController.js'
 export default {
   name:"MonacoEditor",
   props: {
@@ -48,7 +51,6 @@ export default {
   },
   watch: {
     code: function (newValue) {
-      console.debug("Code editor: content change");
       if (this.editor) {
         if (newValue !== this.editor.getValue()) {
           this.editor.setValue(newValue);

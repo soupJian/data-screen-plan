@@ -28,7 +28,6 @@
         this.$store.commit('home/setActiveKey', `${key}`)
       },
       handleToHome() {
-        console.log(1);
         if (this.activeIndex === 'home') { // 如果已经是首页 点击logo 取消事件
           return false
         } else { // 如果不是首页 点击logo 取消事件
