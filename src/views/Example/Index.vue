@@ -5,8 +5,7 @@
     </div>
     <div class="example-right">
       <div class="edit" ref="edit">
-        <MonacoEditor srcPath="" language="javascript" :code="editorCode" :key="randomkey"
-          :editorOptions="editorOptions" @mounted="editMounted">
+        <MonacoEditor  language="javascript" :code="editorCode" @editMounted="editMounted">
         </MonacoEditor>
         <div class="button-wrap">
           <button @click="formatCode()">格式化代码</button>
@@ -22,7 +21,7 @@
 
 </template>
 <script>
-  import MonacoEditor from 'vue-monaco-editor'
+  import MonacoEditor from '@/components/MonacoEditor'
   import ChartView from './ChartView.vue'
   import MyMenu from './Menu.vue'
   import {
@@ -50,17 +49,9 @@
         defaultKey: 'pie', // 点击左侧第几个menu-sub-item
         defaultActive: 'pie-1', // 点击左侧menu-item-groups
         update: false, // 判断是否点击了更新
-        editor: null,
+        editor: null, // 编辑器
         editorCode: '',
         chartOption: pieOneOption, // 地图的option
-        chartOptionCopy: pieOneOption, // 备份地图的option
-        editorOptions: { // 编辑器option
-          folding: true,
-          automaticLayout: true, // 自适应布局
-          showFoldingControls: 'always',
-          tabSize: 2
-        },
-        randomkey: 0
       }
     },
     methods: {
@@ -110,10 +101,8 @@
             defaultOption = mapSixOption
             break;
         }
-        this.createRamdomKey()
         this.chartOption = defaultOption
-        this.chartOptionCopy = defaultOption
-        this.updateEditorCode(this.chartOption)
+        this.editorCode = defaultOption
       },
       // 格式化代码
       formatCode(){
@@ -125,17 +114,13 @@
         if (type == 'update') {
           this.chartOption = this.editor.getValue()
         } else {
-          this.chartOption = this.chartOptionCopy
-          this.updateEditorCode(this.chartOptionCopy)
+          // 重置
+          this.changeChartOption()
         }
       },
       // 挂载编辑器
       editMounted(editor) {
         this.editor = editor;
-      },
-      // createRamdomKey随机生成值，其值类似于id。该方法最为重要，在给code赋值之后，调用这个方法
-      createRamdomKey() {
-        this.randomkey = this.randomkey + Math.floor(Math.random() * 100);
       },
       updateEditorCode(option) {
         this.editorCode = option
@@ -183,8 +168,9 @@
         flex: 5;
         height: calc(100vh - 61px);
         position: relative;
-        background: #1E1E1E;
-
+        #monaco-editor{
+          height: 100%;
+        }
         .button-wrap {
           position: absolute;
           top: 0;
