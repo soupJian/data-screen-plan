@@ -5,7 +5,9 @@ import {
   MenuItemGroup,
   Link,
   Button,
-  Submenu,Message
+  Submenu,
+  Message,
+  Loading
 } from 'element-ui';
 
 Vue.use(Menu)
@@ -14,5 +16,6 @@ Vue.use(MenuItemGroup)
 Vue.use(Link)
 Vue.use(Button)
 Vue.use(Submenu)
-Vue.use(Menu)
+
 Vue.prototype.$message = Message;
+Vue.prototype.$loading = Loading;

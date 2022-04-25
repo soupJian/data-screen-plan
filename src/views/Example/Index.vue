@@ -48,7 +48,6 @@
       return {
         defaultKey: 'pie', // 点击左侧第几个menu-sub-item
         defaultActive: 'pie-1', // 点击左侧menu-item-groups
-        update: false, // 判断是否点击了更新
         editor: null, // 编辑器
         editorCode: '',
         chartOption: pieOneOption, // 地图的option
@@ -106,13 +105,19 @@
       },
       // 格式化代码
       formatCode(){
-        this.editor.getAction('editor.action.formatDocument').run()  //格式化
+        this.editor && this.editor.getAction('editor.action.formatDocument').run()  //格式化
       },
       // 更新
       updateChart(type) {
         // type ==> update/reset
         if (type == 'update') {
-          this.chartOption = this.editor.getValue()
+          const value = this.editor.getValue()
+          this.chartOption = value
+          this.editorCode = value
+          // 半秒后恢复
+          setTimeout(()=>{
+            this.update = false
+          },500)
         } else {
           // 重置
           this.changeChartOption()
@@ -121,12 +126,20 @@
       // 挂载编辑器
       editMounted(editor) {
         this.editor = editor;
+        this.loadingInstance.close();
       },
       updateEditorCode(option) {
         this.editorCode = option
       },
     },
     mounted(){
+      this.loadingInstance = this.$loading.service({
+        target: '.markdown-wrap',
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
       this.changeChartOption()
     }
   }
